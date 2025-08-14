@@ -33,7 +33,7 @@
     position: relative;
     min-height: 100dvh;     /* full screen height on mobile */
 }
-i
+
 /* 
         .container {
             flex: 1;
@@ -417,11 +417,11 @@ i
                 <button class="footer-btn" onclick="shareOnWhatsApp()" aria-label="Send Order on WhatsApp">
                     <i class="fab fa-whatsapp"></i> Send Order
                 </button>
-                <!--<button class="footer-btn" onclick="sendLocationOnWhatsApp()" aria-label="Share Location">
+<!--                 <button class="footer-btn" onclick="sendLocationOnWhatsApp()" aria-label="Share Location">
                     <i class="fas fa-map-marker-alt"></i> Send Location
                 </button> -->
                 <a class="footer-btn" href="#" id="call-btn" aria-label="Call Restaurant">
-                    <i class="fas fa-phone"></i> Call LokYatri
+                    <i class="fas fa-phone"></i> Call Us
                 </a>
             </div>
             <div class="footer-text">
@@ -536,7 +536,7 @@ i
 
         // Render individual dish item
         function renderDishItem(dish) {
-            const isVeg = dish.veg === true;
+            const isonsale = dish.onsale === true;
             const stars = generateStars(dish.rating || 0);
             const currentHour = new Date().getHours();
             const isAvailable = currentHour >= (dish.startTime || 0) && currentHour < (dish.endTime || 24);

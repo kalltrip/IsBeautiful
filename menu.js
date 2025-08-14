@@ -1,18 +1,18 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Fetch store.json and split into veg/non-veg arrays
+    // Fetch store.json and split into onsale/not-onsale arrays
     fetch("store.json")
         .then(response => response.json())
         .then(data => {
             // Extract items from the store.json structure
             const items = data.items || [];
             
-            // Split items into vegetarian and non-vegetarian
-            const vegData = items.filter(item => item.veg === true);
-            const nonvegData = items.filter(item => item.veg === false);
+            // Split items into onsaleetarian and non-onsaleetarian
+            const onsaleData = items.filter(item => item.onsale === true);
+            const nononsaleData = items.filter(item => item.onsale === false);
             
             // Populate menus with filtered data
-            if (vegData.length > 0) populateMenu(vegData, "vegetarian-menu");
-            if (nonvegData.length > 0) populateMenu(nonvegData, "nonvegetarian-menu");
+            if (onsaleData.length > 0) populateMenu(onsaleData, "onsale");
+            if (nononsaleData.length > 0) populateMenu(nononsaleData, "nononsale");
         })
         .catch(error => console.error("Error loading store.json:", error));
 });
@@ -40,9 +40,9 @@ function populateMenu(data, containerId) {
         let fullDesc = dish.description;
 
         dishElement.innerHTML = `
-            <i class="fa fa-circle" style="font-size:14px; color: ${dish.veg ? 'green' : 'red'};">
-                <span class="${dish.veg ? 'vegetarian' : 'non-vegetarian'}">
-                    ${dish.veg ? 'VEGETARIAN' : 'NON-VEGETARIAN'}
+            <i class="fa fa-circle" style="font-size:14px; color: ${dish.onsale ? 'green' : 'red'};">
+                <span class="${dish.onsale ? 'onsale' : 'not-onsale'}">
+                    ${dish.onsale ? 'ONSALE' : 'NOT-ONSALE'}
                 </span>
             </i>
             <div class="dish-content">
