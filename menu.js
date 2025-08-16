@@ -336,6 +336,7 @@ function selectDish(dishName, buttonElement) {
         selectedDishes[dishName] = 1;
         toggleCounter(buttonElement, dishName);
     }
+     updateCartUI();
 }
 
 function toggleCounter(buttonElement, dishName) {
@@ -365,8 +366,23 @@ function updateCount(dishName, change, buttonElement) {
     } else {
         buttonElement.parentNode.querySelector(".count").textContent = selectedDishes[dishName];
     }
+    updateCartUI();
 }
+//Floating Cart
+function updateCartUI() {
+    const cart = document.getElementById("floating-cart");
+    const summary = document.getElementById("cart-summary");
 
+    const totalItems = Object.values(selectedDishes).reduce((a, b) => a + b, 0);
+    const totalPrice = calculateTotal();
+
+    if (totalItems > 0) {
+        summary.textContent = `${totalItems} item${totalItems > 1 ? 's' : ''} | ₹${totalPrice}`;
+        cart.classList.remove("hidden");
+    } else {
+        cart.classList.add("hidden");
+    }
+}
 
 // Update Order List & Show Total Price
 function updateOrderList() {

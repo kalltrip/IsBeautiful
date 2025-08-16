@@ -390,6 +390,45 @@
         .category-nav button.active {
             background-color: gray;
         }
+        /* Floating Cart */
+        .floating-cart {
+            position: relative;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 95%;
+            max-width: 600px;
+            background-color: #000;
+            color: #fff;
+            border-radius: 12px;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+            z-index: 2000;
+        }
+
+        .floating-cart.hidden {
+            display: none;
+        }
+
+        .cart-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .checkout-btn {
+            background: #fff;
+            color: #000;
+            padding: 6px 14px;
+            font-weight: bold;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -410,9 +449,18 @@
         <div id="menu-content">
             <div class="loading">Loading menu...</div>
         </div>
-
+        
+        
         <!-- Footer -->
         <footer class="footer">
+            <!-- Floating Cart -->
+            <div id="floating-cart" class="floating-cart hidden">
+            <div class="cart-content">
+                <span id="cart-summary">0 items | ₹0</span>
+                <button class="checkout-btn" onclick="shareOnWhatsApp()">View Cart</button>
+            </div>
+            </div>
+
             <div class="footer-container" id="footer-main">
                 <button class="footer-btn" onclick="shareOnWhatsApp()" aria-label="Send Order on WhatsApp">
                     <i class="fab fa-whatsapp"></i> Send Order
@@ -428,6 +476,7 @@
                 Powered by <a href="https://teyzee.site" target="_blank">Teyzee Storefront (https://teyzee.site)</a>
             </div>
         </footer>
+        
     </div>
 
     <script>
@@ -654,6 +703,7 @@
                 selectedDishes[dishName] = 1;
                 toggleCounter(buttonElement, dishName);
             }
+            updateCartUI();
         }
 
         // Toggle counter display
@@ -683,8 +733,24 @@
             } else {
                 buttonElement.parentNode.querySelector(".count").textContent = selectedDishes[dishName];
             }
+            updateCartUI();
         }
 
+        //Floating Cart
+function updateCartUI() {
+    const cart = document.getElementById("floating-cart");
+    const summary = document.getElementById("cart-summary");
+
+    const totalItems = Object.values(selectedDishes).reduce((a, b) => a + b, 0);
+    const totalPrice = calculateTotal();
+
+    if (totalItems > 0) {
+        summary.textContent = `${totalItems} item${totalItems > 1 ? 's' : ''} | ₹${totalPrice}`;
+        cart.classList.remove("hidden");
+    } else {
+        cart.classList.add("hidden");
+    }
+}
         // Calculate total price
         function calculateTotal() {
             let total = 0;
@@ -715,7 +781,7 @@
             const upiId = storeData.settings?.upi_id || headerData.upiId || '';
             const upiLink = `upi://pay?pa=${upiId}&am=${orderTotal}&cu=INR`;
             
-            const whatsappMessage = `Order Details:\n${orderSummary}\n\nTotal: ₹${orderTotal}\n\nPay via UPI: ${upiLink}`;
+            const whatsappMessage = `Order Details:\n ${orderSummary} \n \n Total: ₹${orderTotal} \n \n Pay via UPI: ${upiLink}`;
             const whatsappURL = `https://wa.me/${headerData.whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
             
             window.open(whatsappURL, "_blank");
