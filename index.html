@@ -1,14 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({
-        'gtm.start':new Date().getTime(),event:'gtm.js'});
-        var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;
-    j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-M87JL688');
-    </script>
-    <!-- End Google Tag Manager -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="page-title">IsBeautiful Cosmetics Webstore</title>
@@ -441,11 +433,6 @@
 </head>
 
 <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M87JL688"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
-     
     <div class="container">
         <!-- Restaurant Header -->
         <header class="restaurant-info">
@@ -732,6 +719,17 @@
         // Show if flag is true, hide otherwise
         dishDiv.style.display = (item && item.flag) ? '' : 'none';
     });
+    // Hide menu sections (and their titles) if all dishes inside are hidden
+    document.querySelectorAll('.menu-section').forEach(section => {
+        const visibleDishes = section.querySelectorAll('.dish:not([style*="display: none"])');
+        section.style.display = visibleDishes.length > 0 ? '' : 'none';
+    });
+    // Optionally hide the floating cart if nothing is visible
+    const anyVisible = document.querySelectorAll('.dish:not([style*="display: none"])').length > 0;
+    const cart = document.getElementById("floating-cart");
+    if (cart) {
+        cart.classList.toggle("hidden", !anyVisible);
+    }
 }
 
         // Select dish and show counter
@@ -770,6 +768,13 @@
 
             if (selectedDishes[dishName] <= 0) {
                 delete selectedDishes[dishName];
+                if (Array.isArray(storeData.items)) {
+                    const [name, pricePart] = dishName.split(' - ₹');
+                    const item = storeData.items.find(
+                        i => i.name === name && String(i.price) === pricePart
+                    );
+                    if (item) item.flag = false;
+                }
                 const counterElement = buttonElement.parentNode;
                 const addButton = counterElement.parentNode.querySelector(".order-btn");
                 counterElement.remove();
@@ -873,20 +878,22 @@ function updateCartUI() {
                     section.style.display = sectionTitle === selectedCategory ? 'block' : 'none';
                 }
             });
-             // If "Show All" is clicked, show all dishes and reset flags
-            if (selectedCategory === 'all') {
-                // Show all dish divs
-                document.querySelectorAll('.dish').forEach(dishDiv => {
-                dishDiv.style.display = '';
-                });
-                // Reset all flags
-                if (Array.isArray(storeData.items)) {
-                storeData.items.forEach(item => item.flag = false);
-                }
-                //Empty the cart
-                selectedDishes = {};
-                updateCartUI();
-            }
+             if (selectedCategory === 'all') {
+    // Show all dish divs
+    document.querySelectorAll('.dish').forEach(dishDiv => {
+        dishDiv.style.display = '';
+    });
+    // Set flags based on cart
+    if (Array.isArray(storeData.items)) {
+        storeData.items.forEach(item => {
+            // Compose the dish key as used in selectedDishes
+            const dishKey = `${item.name} - ₹${item.price}`;
+            item.flag = !!selectedDishes[dishKey];
+        });
+    }
+    // Optionally, show the floating cart if there are items
+    updateCartUI();
+}
 
         }
 
