@@ -1,9 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({
+        'gtm.start':new Date().getTime(),event:'gtm.js'});
+        var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;
+    j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-M87JL688');
+    </script>
+    <!-- End Google Tag Manager -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="page-title">Lok Yatri Weekend Getaways</title>
+    <title id="page-title">IsBeautiful Cosmetics Webstore</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         * {
@@ -433,6 +441,11 @@
 </head>
 
 <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M87JL688"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+     
     <div class="container">
         <!-- Restaurant Header -->
         <header class="restaurant-info">
@@ -457,7 +470,7 @@
             <div id="floating-cart" class="floating-cart hidden">
             <div class="cart-content">
                 <span id="cart-summary">0 items | ₹0</span>
-                <button class="checkout-btn" onclick="shareOnWhatsApp()">View Cart</button>
+                <button class="checkout-btn" onclick="showOnlyFlaggedDishes()">View Cart</button>
             </div>
             </div>
 
@@ -468,9 +481,9 @@
 <!--                 <button class="footer-btn" onclick="sendLocationOnWhatsApp()" aria-label="Share Location">
                     <i class="fas fa-map-marker-alt"></i> Send Location
                 </button> -->
-                <a class="footer-btn" href="#" id="call-btn" aria-label="Call Restaurant">
+                <button class="footer-btn"  id="call-btn" aria-label="Call Restaurant">
                     <i class="fas fa-phone"></i> Call Us
-                </a>
+                </button>
             </div>
             <div class="footer-text">
                 Powered by <a href="https://teyzee.site" target="_blank">Teyzee Storefront (https://teyzee.site)</a>
@@ -501,6 +514,12 @@
                 // Load store data
                 const storeResponse = await fetch("store.json");
                 storeData = await storeResponse.json();
+                 // Add flag variable to each item
+                 if (Array.isArray(storeData.items)) {
+                storeData.items.forEach(item => {
+                item.flag = false; // Add your default flag value here
+                });
+        }
                 createCategoryNavigation();
                 renderMenu();
 
@@ -696,11 +715,36 @@
                 });
             }
         }
+        //View Cart functionality
+        function showOnlyFlaggedDishes() {
+    // Loop through all dish elements
+    document.querySelectorAll('.dish').forEach(dishDiv => {
+        const nameElem = dishDiv.querySelector('.dish-name');
+        const priceElem = dishDiv.querySelector('.dish-price');
+        if (!nameElem || !priceElem) return;
+
+        const dishName = nameElem.textContent.trim();
+        const dishPrice = priceElem.textContent.replace(/[^\d]/g, '');
+        // Find the corresponding item in storeData
+        const item = (storeData.items || []).find(
+            i => i.name === dishName && String(i.price) === dishPrice
+        );
+        // Show if flag is true, hide otherwise
+        dishDiv.style.display = (item && item.flag) ? '' : 'none';
+    });
+}
 
         // Select dish and show counter
         function selectDish(dishName, buttonElement) {
             if (!selectedDishes[dishName]) {
                 selectedDishes[dishName] = 1;
+                // Set flag to true for the selected item
+                if (Array.isArray(storeData.items)) {
+                const item = storeData.items.find(
+                i => `${i.name} - ₹${i.price}` === dishName
+                );
+            if (item) item.flag = true;
+        }
                 toggleCounter(buttonElement, dishName);
             }
             updateCartUI();
@@ -829,13 +873,30 @@ function updateCartUI() {
                     section.style.display = sectionTitle === selectedCategory ? 'block' : 'none';
                 }
             });
+             // If "Show All" is clicked, show all dishes and reset flags
+            if (selectedCategory === 'all') {
+                // Show all dish divs
+                document.querySelectorAll('.dish').forEach(dishDiv => {
+                dishDiv.style.display = '';
+                });
+                // Reset all flags
+                if (Array.isArray(storeData.items)) {
+                storeData.items.forEach(item => item.flag = false);
+                }
+                //Empty the cart
+                selectedDishes = {};
+                updateCartUI();
+            }
+
         }
 
         // Handle window resize
         window.addEventListener("resize", function() {
             handleReadMore();
         });
+        
     </script>
+    <script src="./menu.js"></script>
 </body>
 
 </html>
