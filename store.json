@@ -12,11 +12,12 @@
             "category": "Face care",
             "subcategory": "Sunscreen",
             "image": "/images/IB_Everyday_Sunscreen.jpeg",
-            "onsale": "true ",
+            "onsale": "true",
             "rating": 4.5,
             "offer": "10% OFF",
             "startTime": 7,
-            "endTime": 23
+            "endTime": 23,
+            "add_text": "Ingredients: Water, Glycerin, Fragrance."
         },
         {
             "name": "IsBeautiful Party Peel (30 ml)",
@@ -25,12 +26,12 @@
             "category": "Face care",
             "subcategory": "Face serum",
             "image": "/images/IB_Party_Peel.jpeg",
-            "onsale": "true ",
-            "rating": 4.5 ,
+            "onsale": "true",
+            "rating": 4.5,
             "offer": "10% OFF",
             "startTime": 7,
-            "endTime": 23
-
+            "endTime": 23,
+            "add_text": "Ingredients: Glycolic Acid, Aloe Vera."
         },
         {
             "name": "IsBeautiful Nia Repair Toner Serum (30 ml)",
@@ -39,24 +40,26 @@
             "category": "Face care",
             "subcategory": "Face serum",
             "image": "/images/IB_Nia_Repair_Serum.jpeg",
-            "onsale": "true ",
+            "onsale": "true",
             "rating": 4.5,
             "offer": "10% OFF",
             "startTime": 7,
-            "endTime": 23
+            "endTime": 23,
+            "add_text": "Ingredients: Niacinamide, Witch Hazel."
         },
         {
             "name": "IsBeautiful PureGlow Toner Serum (30 ml)",
             "price": 1251,
-            "description": "For Ultimate Glow + Brightening ",
+            "description": "For Ultimate Glow + Brightening",
             "category": "Face care",
             "subcategory": "Face serum",
             "image": "/images/IB_Pureglow_Toner_Serum.jpeg",
-            "onsale": "true ",
+            "onsale": "true",
             "rating": 4.5,
             "offer": "10% OFF",
             "startTime": 7,
-            "endTime": 23
+            "endTime": 23,
+            "add_text": "Ingredients: Vitamin C, Licorice Extract."
         },
         {
             "name": "IsBeautiful IntimaPure Serum Lotion (30 ml)",
@@ -65,11 +68,12 @@
             "category": "Body",
             "subcategory": "Serum",
             "image": "/images/IB_Intimapure_Lotion.jpeg",
-            "onsale": "true ",
+            "onsale": "true",
             "rating": 4.5,
             "offer": "10% OFF",
             "startTime": 7,
-            "endTime": 23
+            "endTime": 23,
+            "add_text": "Ingredients: Aloe Vera, Chamomile."
         },
         {
             "name": "IsBeautiful Skin Filter Face Wash (Oily to Sensitive)- 100 ml",
@@ -78,11 +82,12 @@
             "category": "Face care",
             "subcategory": "Face Wash",
             "image": "/images/IB_Skinfilter_FaceWash.jpg",
-            "onsale": "true ",
+            "onsale": "true",
             "rating": 4.5,
             "offer": "10% OFF",
             "startTime": 7,
-            "endTime": 23
+            "endTime": 23,
+            "add_text": "Ingredients: Salicylic Acid, Tea Tree Oil."
         },
         {
             "name": "IsBeautiful Skin Filter Face Wash (Normal to Dry)- 100 ml",
@@ -91,11 +96,12 @@
             "category": "Face care",
             "subcategory": "Face Wash",
             "image": "/images/IB_Skinfilter_FaceWash2.jpeg",
-            "onsale": "true ",
+            "onsale": "true",
             "rating": 4.5,
             "offer": "10% OFF",
             "startTime": 7,
-            "endTime": 23
+            "endTime": 23,
+            "add_text": "Ingredients: Glycerin, Vitamin E."
         },
         {
             "name": "IsBeautiful Skin Filter Mask (25 gm)- 6 Pcs.",
@@ -104,24 +110,26 @@
             "category": "Face care",
             "subcategory": "Face Mask",
             "image": "/images/IB_Skinfilter_Charcoal_Mask.jpeg",
-            "onsale": "true ",
+            "onsale": "true",
             "rating": 4.5,
             "offer": "10% OFF",
             "startTime": 7,
-            "endTime": 23
+            "endTime": 23,
+            "add_text": "Ingredients: Charcoal, Clay."
         },
         {
             "name": "IsBeautiful Skin Filter Mask Vit.C (25 gm)- 10 Pcs.",
             "price": 2160,
-            "description":  "Harnesses the power of nature",
+            "description": "Harnesses the power of nature",
             "category": "Face care",
             "subcategory": "Face Mask",
             "image": "/images/IB_Skin_Filter_Mask_Pouches.jpg",
-            "onsale": "true ",
+            "onsale": "true",
             "rating": 4.5,
             "offer": "10% OFF",
             "startTime": 7,
-            "endTime": 23
+            "endTime": 23,
+            "add_text": "Ingredients: Vitamin C, Hyaluronic Acid."
         },
         {
             "name": "IsBeautiful Skin Filter Mask Arbutin (25 gm)- 10 Pcs.",
@@ -130,11 +138,12 @@
             "category": "Face care",
             "subcategory": "Face Mask",
             "image": "/images/IB_Skin_Filter_Mask_Pouches.jpg",
-            "onsale": "true ",
+            "onsale": "true",
             "rating": 4.5,
             "offer": "10% OFF",
             "startTime": 7,
-            "endTime": 23
+            "endTime": 23,
+            "add_text": "Ingredients: Arbutin, Niacinamide."
         },
         {
             "name": "IsBeautiful Skin Filter Mask Collagen (25 gm)- 10 Pcs.",
@@ -143,11 +152,12 @@
             "category": "Face care",
             "subcategory": "Face Mask",
             "image": "/images/IB_Skin_Filter_Mask_Pouches.jpg",
-            "onsale": "true ",
+            "onsale": "true",
             "rating": 4.5,
             "offer": "10% OFF",
             "startTime": 7,
-            "endTime": 23
+            "endTime": 23,
+            "add_text": "Ingredients: Collagen, Elastin."
         },
         {
             "name": "Pedicalm Intensive Hydration Balm- Hand & Feet Cream (80 gm)",
@@ -156,11 +166,12 @@
             "category": "Body",
             "subcategory": "Hand & Feet Care",
             "image": "/images/PC_Glyco_Mousse.jpeg",
-            "onsale": "true ",
+            "onsale": "true",
             "rating": 4.5,
             "offer": "10% OFF",
             "startTime": 7,
-            "endTime": 23
+            "endTime": 23,
+            "add_text": "Ingredients: Urea, Glycerin."
         },
         {
             "name": "Pedicalm Glycolic Mousse (100 ml)",
@@ -169,11 +180,12 @@
             "category": "Body",
             "subcategory": "Hand & Feet Mousse",
             "image": "/images/PC_Hydration_Balm.jpeg",
-            "onsale": "true ",
+            "onsale": "true",
             "rating": 4.5,
             "offer": "10% OFF",
             "startTime": 7,
-            "endTime": 23
+            "endTime": 23,
+            "add_text": "Ingredients: Glycolic Acid."
         },
         {
             "name": "Pedicalm Urea Mousse (100 ml)",
@@ -182,11 +194,12 @@
             "category": "Body",
             "subcategory": "Hand & Feet Mousse",
             "image": "/images/PC_Urea_Mousse.jpg",
-            "onsale": "true ",
+            "onsale": "true",
             "rating": 4.5,
             "offer": "10% OFF",
             "startTime": 7,
-            "endTime": 23
+            "endTime": 23,
+            "add_text": "Ingredients: Urea, Aloe Vera."
         }
     ]
 }

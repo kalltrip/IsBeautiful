@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="product-page-title">Product Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f8f8;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+        .product-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+        .product-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .product-name {
+            font-size: 1.8rem; /* Reduced font size */
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #000;
+            max-height: 3.2em; /* Limit height for 256 characters */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* Limit to 2 lines */
+            -webkit-box-orient: vertical;
+        }
+        .product-price {
+            font-size: 1.8rem;
+            color: #000;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .product-rating {
+            color: #ffc107;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+        .product-description {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #555;
+            text-align: left;
+            margin-bottom: 25px;
+        }
+        .add-text {
+            font-size: 0.8rem; /* Smaller font size for additional text */
+            color: #777;
+            margin-top: 10px;
+            text-align: left;
+        }
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .action-button {
+            background-color: #000;
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .action-button i {
+            margin-right: 10px;
+        }
+        .action-button.whatsapp {
+            background-color: #25D366;
+        }
+        .action-button.whatsapp:hover {
+            background-color: #1DA851;
+        }
+        .action-button.upi {
+            background-color: #673AB7; /* A common UPI color */
+        }
+        .action-button.upi:hover {
+            background-color: #512DA8;
+        }
+        .action-button:hover {
+            background-color: #333;
+        }
+        .back-button {
+            margin-top: 20px;
+            background-color: #f0f0f0;
+            color: #000;
+            border: 1px solid #ddd;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .back-button:hover {
+            background-color: #e0e0e0;
+        }
+        .loading-message {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #777;
+            margin-top: 50px;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+            .product-container {
+                padding: 20px;
+            }
+            .product-name {
+                font-size: 1.5rem; /* Adjusted for smaller screens */
+            }
+            .product-price {
+                font-size: 1.5rem;
+            }
+            .action-button {
+                font-size: 1rem;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="product-container" id="product-details-container">
+        <div class="loading-message">Loading product details...</div>
+    </div>
+
+    <script>
+        let headerData = {};
+        let storeData = {};
+
+        // Helper function to slugify strings (must match the one in index.html)
+        function slugify(text) {
+            return text.toString().toLowerCase()
+                .replace(/\s+/g, '-')           // Replace spaces with -
+                .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+                .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+                .replace(/^-+/, '')             // Trim - from start of text
+                .replace(/-+$/, '');            // Trim - from end of text
+        }
+
+        // Generate star rating HTML (reused from index.html)
+        function generateStars(rating) {
+            if (!rating) return '';
+            
+            let fullStars = Math.floor(rating);
+            let halfStar = rating % 1 !== 0;
+            let starHTML = "";
+            
+            for (let i = 0; i < fullStars; i++) {
+                starHTML += '<i class="fa fa-star"></i> ';
+            }
+            if (halfStar) {
+                starHTML += '<i class="fa fa-star-half"></i> ';
+            }
+            return starHTML;
+        }
+
+        async function loadProductDetails() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+            const container = document.getElementById('product-details-container');
+
+            if (!productId) {
+                container.innerHTML = '<div class="loading-message">Product ID not found in URL.</div>';
+                return;
+            }
+
+            try {
+                const [headerResponse, storeResponse] = await Promise.all([
+                    fetch("header.json"),
+                    fetch("store.json")
+                ]);
+
+                headerData = await headerResponse.json();
+                storeData = await storeResponse.json();
+
+                const product = storeData.items.find(item => slugify(item.name) === productId);
+
+                if (product) {
+                    document.getElementById('product-page-title').textContent = product.name;
+                    container.innerHTML = `
+                        ${product.image ? `<img src="${product.image}" alt="${product.name}" class="product-image">` : ''}
+                        <h1 class="product-name">${product.name}</h1>
+                        <p class="product-price">₹${product.price}</p>
+                        ${product.rating ? `<div class="product-rating">${generateStars(product.rating)} (${product.rating})</div>` : ''}
+                        <p class="product-description">${product.description || 'No description available.'}</p>
+                        ${product.add_text ? `<p class="add-text">${product.add_text}</p>` : ''}
+                        <div class="action-buttons">
+                            <button class="action-button whatsapp" onclick="shareOnWhatsApp('${product.name}', ${product.price})">
+                                <i class="fab fa-whatsapp"></i> Order on WhatsApp
+                            </button>
+                            <button class="action-button upi" onclick="payViaUPI(${product.price})">
+                                <i class="fas fa-money-bill-wave"></i> Pay via UPI
+                            </button>
+                        </div>
+                        <a href="index.html" class="back-button">Back to Menu</a>
+                    `;
+                } else {
+                    container.innerHTML = '<div class="loading-message">Product not found.</div>';
+                }
+
+            } catch (error) {
+                console.error("Error loading product details:", error);
+                container.innerHTML = '<div class="loading-message">Error loading product details. Please try again.</div>';
+            }
+        }
+
+        function shareOnWhatsApp(productName, productPrice) {
+            if (!headerData.whatsappNumber) {
+                alert("WhatsApp number not found. Please try again later.");
+                return;
+            }
+            const message = `I would like to order: ${productName} - ₹${productPrice}`;
+            const whatsappURL = `https://wa.me/${headerData.whatsappNumber}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappURL, "_blank");
+        }
+
+        function payViaUPI(amount) {
+            const upiId = headerData.upiId || '';
+            if (!upiId) {
+                alert("UPI ID not configured. Please contact the store.");
+                return;
+            }
+            const upiLink = `upi://pay?pa=${upiId}&am=${amount}&cu=INR`;
+            window.open(upiLink, "_blank");
+        }
+
+        document.addEventListener("DOMContentLoaded", loadProductDetails);
+    </script>
+</body>
+</html>

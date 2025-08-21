@@ -485,6 +485,16 @@
         let storeData = {};
         let headerData = {};
 
+        // Helper function to slugify strings
+        function slugify(text) {
+            return text.toString().toLowerCase()
+                .replace(/\s+/g, '-')           // Replace spaces with -
+                .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+                .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+                .replace(/^-+/, '')             // Trim - from start of text
+                .replace(/-+$/, '');            // Trim - from end of text
+        }
+
         // Initialize the application
         document.addEventListener("DOMContentLoaded", function() {
             loadData();
@@ -501,12 +511,13 @@
                 // Load store data
                 const storeResponse = await fetch("store.json");
                 storeData = await storeResponse.json();
-                 // Add flag variable to each item
+                 // Add flag variable to each item and a unique ID
                  if (Array.isArray(storeData.items)) {
-                storeData.items.forEach(item => {
-                item.flag = false; // Add your default flag value here
-                });
-        }
+                    storeData.items.forEach(item => {
+                        item.flag = false; // Add your default flag value here
+                        item.id = slugify(item.name); // Generate ID for each item
+                    });
+                }
                 createCategoryNavigation();
                 renderMenu();
 
@@ -604,7 +615,9 @@
                 <div class="dish">
                     <div class="dish-content">
                         <div class="dish-details">
-                            <h3 class="dish-name">${dish.name || 'Unknown Dish'}</h3>
+                            <h3 class="dish-name">
+                                <a href="product.html?id=${dish.id}">${dish.name || 'Unknown Dish'}</a>
+                            </h3>
                             <div class="dish-pricing">
                                 <span class="dish-price">₹${dish.price || 0}</span>
                                 ${dish.price ? `<span class="original-price">₹${Math.round(dish.price * 1.11)}</span>` : ''}
@@ -706,7 +719,7 @@
         function showOnlyFlaggedDishes() {
     // Loop through all dish elements
     document.querySelectorAll('.dish').forEach(dishDiv => {
-        const nameElem = dishDiv.querySelector('.dish-name');
+        const nameElem = dishDiv.querySelector('.dish-name a'); // Adjusted selector for the link
         const priceElem = dishDiv.querySelector('.dish-price');
         if (!nameElem || !priceElem) return;
 
@@ -907,8 +920,3 @@ function updateCartUI() {
 </body>
 
 </html>
-
-
-
-
-
